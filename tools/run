@@ -2,7 +2,13 @@
 
 cd "$(dirname "$0")/.."
 
-go fmt .
+pwd
 
-go run ./cmd/web
+gofmt \
+    -w \
+    -s \
+    ./
 
+go \
+    run \
+    ./cmd/web
