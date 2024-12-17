@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+cd "$(dirname "$0")/.."
+
+go fmt .
+
+go run ./cmd/web
+
