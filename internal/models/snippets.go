@@ -1,0 +1,69 @@
+package models
+
+import (
+	"context"
+	"errors"
+	"time"
+
+	"github.com/jackc/pgx/v5"
+	"github.com/jackc/pgx/v5/pgxpool"
+)
+
+var ErrNoRecord = errors.New("models: no matching record found")
+
+type Snippet struct {
+	ID      int
+	Title   string
+	Content string
+	Created time.Time
+	Expires time.Time
+}
+
+type SnippetModel struct {
+	DB *pgxpool.Pool
+}
+
+func (m *SnippetModel) Insert(title string, content string, expires int) (int, error) {
+
+	stmt := `INSERT INTO snippets (title, content, created, expires)
+	VALUES($1, $2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP + INTERVAL '1 DAY' * $3)
+				returning id`
+
+	ctx := context.Background()
+
+	var id int
+	err := m.DB.QueryRow(ctx, stmt, title, content, expires).Scan(&id)
+
+	if err != nil {
+		return 0, err
+	}
+
+	return id, nil
+}
+
+func (m *SnippetModel) Get(id int) (Snippet, error) {
+	// return Snippet{}, nil
+	stmt := `SELECT id, title, content, created, expires
+				FROM snippets
+				WHERE expires > CURRENT_TIMESTAMP AND id = $1`
+
+	ctx := context.Background()
+
+	var s Snippet
+	err := m.DB.QueryRow(ctx, stmt, id).Scan(&s.ID, &s.Title, &s.Content, &s.Created, &s.Expires)
+
+	if err != nil {
+		if errors.Is(err, pgx.ErrNoRows) {
+			// Use ErrNoRecord so we encsulate the model
+			return Snippet{}, ErrNoRecord
+		} else {
+			return Snippet{}, err
+		}
+	}
+
+	return s, nil
+}
+
+func (m *SnippetModel) Latest() ([]Snippet, error) {
+	return nil, nil
+}
