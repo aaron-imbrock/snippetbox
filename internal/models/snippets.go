@@ -23,10 +23,13 @@ type SnippetModel struct {
 	DB *pgxpool.Pool
 }
 
+// TODO : NEXT TIME USE THIS PATTERN
+// https://github.com/jackc/pgx/wiki/Getting-started-with-pgx#using-a-connection-pool
+
 func (m *SnippetModel) Insert(title string, content string, expires int) (int, error) {
 
 	stmt := `INSERT INTO snippets (title, content, created, expires)
-	VALUES($1, $2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP + INTERVAL '1 DAY' * $3)
+				VALUES($1, $2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP + INTERVAL '1 DAY' * $3)
 				returning id`
 
 	ctx := context.Background()
@@ -64,6 +67,33 @@ func (m *SnippetModel) Get(id int) (Snippet, error) {
 	return s, nil
 }
 
+// Code is likely janky
 func (m *SnippetModel) Latest() ([]Snippet, error) {
-	return nil, nil
+	stmt := `SELECT id, title, content, created, expires
+				FROM snippets
+				WHERE expires > CURRENT_TIMESTAMP
+				ORDER BY id DESC
+				LIMIT 10;`
+
+	ctx := context.Background()
+
+	rows, err := m.DB.Query(ctx, stmt)
+
+	if err != nil {
+		return nil, err
+	}
+
+	defer rows.Close()
+
+	var snippets []Snippet
+
+	for rows.Next() {
+		var s Snippet
+		err := rows.Scan(&s.ID, &s.Title, &s.Content, &s.Created, &s.Expires)
+		if err != nil {
+			return nil, err
+		}
+		snippets = append(snippets, s)
+	}
+	return snippets, nil
 }
