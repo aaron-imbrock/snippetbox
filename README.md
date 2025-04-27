@@ -17,3 +17,17 @@ snippetbox relies on the `pgx` driver and `Postgres`.
 ```
 go get github.com/jackc/pgx/v5
 go get github.com/jackc/pgx/v5/pgxpool@v5.7.4
+
+#### Compile
+
+From project root:
+```
+go build ./cmd/web/
+```
+
+#### Run
+
+From project root:
+```
+./web
+```
