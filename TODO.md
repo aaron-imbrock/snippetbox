@@ -1,6 +1,6 @@
 ### TODO 
 
-(https://github.com/aaron-imbrock/snippetbox/issues)[Direct link to the Issues page]
+[Issues page](https://github.com/aaron-imbrock/snippetbox/issues)
 
 #### Disable directory listings
 
