@@ -1,3 +1,4 @@
+### TODO
 
 #### Disable directory listings
 
@@ -5,9 +6,8 @@
 
 ### Done
 
-#### Pin and download dependencies
 - [x] https://github.com/aaron-imbrock/snippetbox/pull/9
-
+- #### Pin and download dependencies
 ```
 go mod tidy -e
 go mod vendor
