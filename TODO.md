@@ -2,11 +2,10 @@
 
 #### Disable directory listings
 
-- [ ] https://github.com/aaron-imbrock/snippetbox/issues/10
-[Disable access to /static by implementing this blog post](https://www.alexedwards.net/blog/disable-http-fileserver-directory-listings)
+- [ ] https://github.com/aaron-imbrock/snippetbox/issues/10 Disable access to /static
 
 #### Panic recovery in background goroutines
-- [ ] https://github.com/aaron-imbrock/snippetbox/issues/12
+- [ ] https://github.com/aaron-imbrock/snippetbox/issues/12 Panic recovery in background goroutines
 
 ### Done
 
