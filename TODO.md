@@ -1,12 +1,11 @@
 
 #### Disable directory listings
 
-[https://www.alexedwards.net/blog/disable-http-fileserver-directory-listings](Disable access to /static by implementing this)
-
+- [ ] [Disable access to /static by implementing this blog post](https://www.alexedwards.net/blog/disable-http-fileserver-directory-listings)
 
 ### Done
 
-#### Pin and download dependencies
+- [x] #### Pin and download dependencies
 https://github.com/aaron-imbrock/snippetbox/pull/9
 
 ```
