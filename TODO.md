@@ -5,8 +5,8 @@
 
 ### Done
 
-- [x] #### Pin and download dependencies
-https://github.com/aaron-imbrock/snippetbox/pull/9
+#### Pin and download dependencies
+- [x] https://github.com/aaron-imbrock/snippetbox/pull/9
 
 ```
 go mod tidy -e
