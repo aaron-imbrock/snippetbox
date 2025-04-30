@@ -2,7 +2,8 @@
 
 #### Disable directory listings
 
-- [ ] [Disable access to /static by implementing this blog post](https://www.alexedwards.net/blog/disable-http-fileserver-directory-listings)
+- [ ] https://github.com/aaron-imbrock/snippetbox/issues/10
+[Disable access to /static by implementing this blog post](https://www.alexedwards.net/blog/disable-http-fileserver-directory-listings)
 
 ### Done
 
