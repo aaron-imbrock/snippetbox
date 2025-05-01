@@ -1,5 +1,39 @@
 ### Snippetbox
 
+#### Setup
+
+Since this project uses module vendoring you only need to setup the database. We assume postgres and docker are already present.
+
+To setup the database:
+
+```
+TODO: Add sql commands for setting up database, tables, and access permissions.
+```
+
+#### Run
+
+##### Locally
+
+FYI: This project assumes that postgres is running locally.
+
+From project root:
+```
+go build ./cmd/web/
+./web
+```
+
+##### Docker
+
+The Dockerfile is setup to use the host's network directly.
+For now, it's assumed that Postgres is running on the machine also hosting the container.
+
+```
+## Test
+sudo docker compose up
+## Or, Detached
+sudo docker compose up -d
+```
+
 #### Project Structure
 
 All golang code we write lives under `cmd` and `internal`.
@@ -10,25 +44,4 @@ All golang code we write lives under `cmd` and `internal`.
 
 `ui` directory contains user-interface assets used by the front-end web application. Specifically, html templates, and the `ui/static` directory contains static files like CSS nd images.
 
-#### Database
-
-snippetbox relies on the `pgx` driver and `Postgres`.
-
-```
-go get github.com/jackc/pgx/v5
-go get github.com/jackc/pgx/v5/pgxpool@v5.7.4
-```
-
-#### Compile
-
-From project root:
-```
-go build ./cmd/web/
-```
-
-#### Run
-
-From project root:
-```
-./web
-```
+We assume Postgres is already running locally. Setup for the database is below.
