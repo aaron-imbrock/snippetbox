@@ -29,7 +29,7 @@ A modern, secure web application for creating and sharing text snippets. Built w
 
 ## 📋 Requirements
 
-- Go 2.18+
+- Go 2.23+
 - PostgreSQL
 - Docker (optional, for containerized deployment)
 
