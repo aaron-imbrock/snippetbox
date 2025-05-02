@@ -22,7 +22,7 @@ jobs:
         go-version: '1.23'
 
     - name: Build
-      run: go -o snippetbox build ./cmd/web 
+      run: go build -o snippetbox ./cmd/web 
 
     # - name: Test
     #   run: go test -v ./...
