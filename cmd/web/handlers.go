@@ -5,17 +5,21 @@ import (
 	"fmt"
 	"net/http"
 	"strconv"
+	"strings"
+	"unicode/utf8"
 
 	"github.com/aaron-imbrock/snippetbox/internal/models"
 	"github.com/aaron-imbrock/snippetbox/internal/validator"
 )
 
 type snippetCreateForm struct {
-	Title   string
-	Content string
-	Expires int
+	Title       string
+	Content     string
+	Expires     int
+	// FieldErrors map[string]string
 	validator.Validator
 }
+
 
 func (app *application) home(w http.ResponseWriter, r *http.Request) {
 	snippets, err := app.snippets.Latest()
@@ -77,11 +81,12 @@ func (app *application) snippetCreatePost(w http.ResponseWriter, r *http.Request
 		return
 	}
 
-	// This is an instance of the snippetCreatePost struct create above.
+	// This is an instance of the snippetCreateForm struct create above.
 	form := snippetCreateForm{
 		Title:   r.PostForm.Get("title"),
 		Content: r.PostForm.Get("content"),
 		Expires: expires,
+		// FieldErrors: map[string]string{},
 	}
 
 	form.CheckField(validator.NotBlank(form.Title), "title", "This field cannot be blank")
