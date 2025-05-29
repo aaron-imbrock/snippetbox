@@ -10,6 +10,7 @@ import (
 
 	"github.com/aaron-imbrock/snippetbox/internal/models"
 
+	"github.com/go-playground/form/v4"
 	"github.com/jackc/pgx/v5/pgxpool"
 )
 
@@ -17,6 +18,7 @@ type application struct {
 	logger        *slog.Logger
 	snippets      *models.SnippetModel
 	templateCache map[string]*template.Template
+	formDecoder   *form.Decoder
 }
 
 func main() {
@@ -39,10 +41,14 @@ func main() {
 		logger.Error(err.Error())
 		os.Exit(1)
 	}
+
+	formDecoder := form.NewDecoder()
+
 	app := &application{
 		logger:        logger,
 		snippets:      &models.SnippetModel{DB: db},
 		templateCache: templateCache,
+		formDecoder:   formDecoder,
 	}
 
 	logger.Info("starting server", "addr", *addr)

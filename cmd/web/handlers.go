@@ -3,23 +3,18 @@ package main
 import (
 	"errors"
 	"fmt"
-	"net/http"
-	"strconv"
-	"strings"
-	"unicode/utf8"
-
 	"github.com/aaron-imbrock/snippetbox/internal/models"
 	"github.com/aaron-imbrock/snippetbox/internal/validator"
+	"net/http"
+	"strconv"
 )
 
 type snippetCreateForm struct {
-	Title       string
-	Content     string
-	Expires     int
-	// FieldErrors map[string]string
-	validator.Validator
+	Title               string `form:"title"`
+	Content             string `form:"content"`
+	Expires             int    `form:"expires"`
+	validator.Validator `form:"-"`
 }
-
 
 func (app *application) home(w http.ResponseWriter, r *http.Request) {
 	snippets, err := app.snippets.Latest()
@@ -69,24 +64,18 @@ func (app *application) snippetCreate(w http.ResponseWriter, r *http.Request) {
 }
 
 func (app *application) snippetCreatePost(w http.ResponseWriter, r *http.Request) {
-	err := r.ParseForm()
+
+	var form snippetCreateForm
+	// Call Decode() method of the form decoder,
+	// Pass in the current request and * a pointer * to the snippetCreateForm struct.
+	// That will essentially fill the struct w/ the relevant values from the HTMl form.
+	// Return a 400 Bad Request response to the client if there's a problem.
+	//err = app.formDecoder.Decode(&form, r.PostForm)
+	err := app.decodePostForm(r, &form)
+	
 	if err != nil {
 		app.clientError(w, http.StatusBadRequest)
 		return
-	}
-
-	expires, err := strconv.Atoi(r.PostForm.Get("expires"))
-	if err != nil {
-		app.clientError(w, http.StatusBadRequest)
-		return
-	}
-
-	// This is an instance of the snippetCreateForm struct create above.
-	form := snippetCreateForm{
-		Title:   r.PostForm.Get("title"),
-		Content: r.PostForm.Get("content"),
-		Expires: expires,
-		// FieldErrors: map[string]string{},
 	}
 
 	form.CheckField(validator.NotBlank(form.Title), "title", "This field cannot be blank")
