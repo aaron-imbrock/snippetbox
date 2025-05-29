@@ -72,7 +72,7 @@ func (app *application) snippetCreatePost(w http.ResponseWriter, r *http.Request
 	// Return a 400 Bad Request response to the client if there's a problem.
 	//err = app.formDecoder.Decode(&form, r.PostForm)
 	err := app.decodePostForm(r, &form)
-	
+
 	if err != nil {
 		app.clientError(w, http.StatusBadRequest)
 		return
