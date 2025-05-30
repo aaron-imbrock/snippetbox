@@ -13,6 +13,15 @@ CREATE TABLE snippets (
     expires TIMESTAMP NOT NULL
 );
 
+-- Create a `sessions` table
+CREATE TABLE sessions (
+	token TEXT PRIMARY KEY,
+	data BYTEA NOT NULL,
+	expiry TIMESTAMPTZ NOT NULL
+);
+
+CREATE INDEX sessions_expiry_idx ON sessions(expiry);
+
 -- Add an index on the created column
 CREATE INDEX idx_snippets_created ON snippets(created);
 
