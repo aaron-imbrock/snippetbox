@@ -3,10 +3,11 @@ package main
 import (
 	"errors"
 	"fmt"
-	"github.com/aaron-imbrock/snippetbox/internal/models"
-	"github.com/aaron-imbrock/snippetbox/internal/validator"
 	"net/http"
 	"strconv"
+
+	"github.com/aaron-imbrock/snippetbox/internal/models"
+	"github.com/aaron-imbrock/snippetbox/internal/validator"
 )
 
 type snippetCreateForm struct {
@@ -51,7 +52,6 @@ func (app *application) snippetView(w http.ResponseWriter, r *http.Request) {
 	data.Snippet = snippet
 
 	app.render(w, r, http.StatusOK, "view.html", data)
-
 }
 
 func (app *application) snippetCreate(w http.ResponseWriter, r *http.Request) {
@@ -95,6 +95,9 @@ func (app *application) snippetCreatePost(w http.ResponseWriter, r *http.Request
 		app.serverError(w, r, err)
 		return
 	}
+	// Put() method adds a string value ("Snippet successfully created!")
+	// and the corresponding key ("flash") to the session data.
+	app.sessionManager.Put(r.Context(), "flash", "Snippet successfully created!")
 
 	http.Redirect(w, r, fmt.Sprintf("/snippet/view/%d", id), http.StatusSeeOther)
 }
