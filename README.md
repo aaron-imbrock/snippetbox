@@ -79,10 +79,10 @@ The project uses Go modules for dependency management. No need to manually insta
 
 ```bash
 # Build the application
-go build ./cmd/web/
+go build -o snippetbox ./cmd/web
 
 # Run the server
-./web
+./snippetbox
 
 # By default, the server runs on http://localhost:4000
 ```
