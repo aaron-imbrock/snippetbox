@@ -1,2 +1,6 @@
 ./web
+
+tls/*.pem
+tls/*.cert
 .idea
+snippetbox

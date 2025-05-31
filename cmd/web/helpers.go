@@ -31,6 +31,10 @@ func (app *application) render(w http.ResponseWriter, r *http.Request, status in
 		return
 	}
 
+	// Deliberate error: set a Content-Length header with an invalid (non-integer) value.
+	// Check that logging is standardized.
+	// w.Header().Set("Content-Length", "this isn't an integer!")
+
 	// If the template is written to the buffer w/o any errors, we are safe
 	// to go ahead and write the HTTP status code to http.ResponseWriter.
 	w.WriteHeader(status)
