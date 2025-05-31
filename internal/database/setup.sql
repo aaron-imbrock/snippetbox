@@ -5,7 +5,7 @@ CREATE DATABASE snippetbox;
 \c snippetbox
 
 -- Create a `snippets` table
-CREATE TABLE snippets (
+CREATE TABLE IF NOT EXISTS snippets (
     id SERIAL PRIMARY KEY,
     title VARCHAR(100) NOT NULL,
     content TEXT NOT NULL,
@@ -13,17 +13,31 @@ CREATE TABLE snippets (
     expires TIMESTAMP NOT NULL
 );
 
+-- Add an index on the created column
+CREATE INDEX idx_snippets_created ON snippets(created);
+
 -- Create a `sessions` table
-CREATE TABLE sessions (
+CREATE TABLE IF NOT EXISTS sessions (
 	token TEXT PRIMARY KEY,
 	data BYTEA NOT NULL,
 	expiry TIMESTAMPTZ NOT NULL
 );
 
+-- Add an index on the expiry column
 CREATE INDEX sessions_expiry_idx ON sessions(expiry);
 
--- Add an index on the created column
-CREATE INDEX idx_snippets_created ON snippets(created);
+-- Create a `users` table
+-- hashed_password stores a bcrypt hash, which are always exactly 60 characters
+CREATE TABLE IF NOT EXISTS users (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    email VARCHAR(255) NOT NULL,
+    hashed_password CHAR(60) NOT NULL,
+    created TIMESTAMP NOT NULL DEFAULT NOW()
+);
+
+-- `email` column must be unique. This constraint creates an index automatically.
+ALTER TABLE users ADD CONSTRAINT users_uc_email UNIQUE (email);
 
 -- Create web user with password
 CREATE USER web WITH PASSWORD 'pass';

@@ -9,8 +9,6 @@ import (
 	"github.com/jackc/pgx/v5/pgxpool"
 )
 
-var ErrNoRecord = errors.New("models: no matching record found")
-
 type Snippet struct {
 	ID      int
 	Title   string
