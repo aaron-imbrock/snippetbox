@@ -1,10 +1,27 @@
 package validator
 
 import (
+	"regexp"
 	"slices"
 	"strings"
 	"unicode/utf8"
 )
+
+// Email address sanity check
+// Because the EmailRX regexp pattern is written as an interpreted string literal, we need to
+// double-escape special characters in the regexp with \\ for it to work correctly. We can’t
+// use a raw string literal because the pattern contains a back quote character.
+// https://html.spec.whatwg.org/multipage/input.html#valid-e-mail-address
+// https://go.dev/ref/spec#String_literals
+var EmailRX = regexp.MustCompile("^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$")
+
+func MinChars(value string, n int) bool {
+	return utf8.RuneCountInString(value) > n
+}
+
+func Matches(value string, rx *regexp.Regexp) bool {
+	return rx.MatchString(value)
+}
 
 type Validator struct {
 	FieldErrors map[string]string
